@@ -61,9 +61,16 @@ def get_news_sentiment(ticker):
         news_df['Title'] = news_df['Title'].str.lower()
         news_df['sentiment'] = news_df['Title'].apply(classify_sentiment)
         news_df['sentiment'] = news_df['sentiment'].str.upper()
-        news_df['Date'] = pd.to_datetime(news_df['Date'])
+        
+        # Fix date parsing
+        def convert_date(date_str):
+            if 'Today' in date_str:
+                return datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)
+            return pd.to_datetime(date_str)
+        
+        news_df['Date'] = news_df['Date'].apply(convert_date)
         return news_df
-
+        
 def calculate_technical_indicators(data):
     indicators = {}
     indicators['SMA_20'] = ta.trend.sma_indicator(data['Close'], window=20)
