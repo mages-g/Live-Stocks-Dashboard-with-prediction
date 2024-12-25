@@ -1,0 +1,4 @@
+# config.py
+OLLAMA_MODEL = "llama3"
+DEFAULT_TICKER = "AAPL"
+WATCHLIST = ["AAPL", "MSFT", "GOOGL", "AMZN"]
