@@ -307,4 +307,4 @@ if analyze_button:
 
 # Footer
 st.sidebar.markdown("---")
-st.sidebar.caption("Created by Deep Charts")
+st.sidebar.caption("A live app by Magesh Kumar Govind")
