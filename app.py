@@ -70,7 +70,7 @@ def calculate_technical_indicators(data):
     indicators['EMA_20'] = ta.trend.ema_indicator(data['Close'], window=20)
     indicators['RSI'] = ta.momentum.rsi(data['Close'], window=14)
     indicators['MACD'] = ta.trend.macd_diff(data['Close'])
-    indicators['BB_upper'], indicators['BB_middle'], indicators['BB_lower'] = ta.volatility.bollinger_bands(data['Close'])
+    indicators['BB_upper'], indicators['BB_middle'], indicators['BB_lower'] = ta.volatility.BollingerBands()(data['Close'])
     return indicators
 
 def create_price_chart(data, chart_type, selected_indicators):
