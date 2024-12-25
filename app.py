@@ -152,30 +152,30 @@ with st.sidebar:
     
     analyze_button = st.button('🔄 Analyze Stock', use_container_width=True)
     
-# Watchlist
-st.markdown("---")
-st.subheader("📊 Market Watchlist")
-watchlist = ['AAPL', 'MSFT', 'GOOGL', 'AMZN']
-for symbol in watchlist:
-    try:
-        # Get recent data
-        recent_data = yf.download(symbol, period='2d', interval='1d')
-        if len(recent_data) >= 1:
-            current_price = recent_data['Close'].iloc[-1]
-            daily_change = 0  # Default to 0 if not enough data
-            if len(recent_data) >= 2:
-                daily_change = (recent_data['Close'].iloc[-1] / recent_data['Close'].iloc[-2] - 1) * 100
-            
-            st.metric(
-                symbol,
-                f"${current_price:.2f}",
-                f"{daily_change:+.2f}%",
-                delta_color="normal"
-            )
-        else:
-            st.error(f"Insufficient data for {symbol}")
-    except Exception as e:
-        st.error(f"Could not fetch data for {symbol}")
+    # Watchlist
+    st.markdown("---")
+    st.subheader("📊 Market Watchlist")
+    watchlist = ['AAPL', 'MSFT', 'GOOGL', 'AMZN']
+    for symbol in watchlist:
+        try:
+            # Get recent data
+            recent_data = yf.download(symbol, period='2d', interval='1d')
+            if len(recent_data) >= 1:
+                current_price = recent_data['Close'].iloc[-1]
+                daily_change = 0  # Default to 0 if not enough data
+                if len(recent_data) >= 2:
+                    daily_change = (recent_data['Close'].iloc[-1] / recent_data['Close'].iloc[-2] - 1) * 100
+                
+                st.metric(
+                    symbol,
+                    f"${current_price:.2f}",
+                    f"{daily_change:+.2f}%",
+                    delta_color="normal"
+                )
+            else:
+                st.error(f"Insufficient data for {symbol}")
+        except Exception as e:
+            st.error(f"Could not fetch data for {symbol}")
 
 # Main content
 if analyze_button:
