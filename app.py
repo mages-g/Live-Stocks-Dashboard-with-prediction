@@ -152,22 +152,30 @@ with st.sidebar:
     
     analyze_button = st.button('🔄 Analyze Stock', use_container_width=True)
     
-    # Watchlist
-    st.markdown("---")
-    st.subheader("📊 Market Watchlist")
-    watchlist = ['AAPL', 'MSFT', 'GOOGL', 'AMZN']
-    for symbol in watchlist:
-        try:
-            current_price = yf.download(symbol, period='1d', interval='1m').iloc[-1]['Close']
-            daily_change = yf.download(symbol, period='2d', interval='1d')['Close'].pct_change().iloc[-1] * 100
+# Watchlist
+st.markdown("---")
+st.subheader("📊 Market Watchlist")
+watchlist = ['AAPL', 'MSFT', 'GOOGL', 'AMZN']
+for symbol in watchlist:
+    try:
+        # Get recent data
+        recent_data = yf.download(symbol, period='2d', interval='1d')
+        if len(recent_data) >= 1:
+            current_price = recent_data['Close'].iloc[-1]
+            daily_change = 0  # Default to 0 if not enough data
+            if len(recent_data) >= 2:
+                daily_change = (recent_data['Close'].iloc[-1] / recent_data['Close'].iloc[-2] - 1) * 100
+            
             st.metric(
                 symbol,
                 f"${current_price:.2f}",
                 f"{daily_change:+.2f}%",
                 delta_color="normal"
             )
-        except:
-            st.error(f"Could not fetch data for {symbol}")
+        else:
+            st.error(f"Insufficient data for {symbol}")
+    except Exception as e:
+        st.error(f"Could not fetch data for {symbol}")
 
 # Main content
 if analyze_button:
@@ -190,9 +198,13 @@ if analyze_button:
             metrics_col1, metrics_col2, metrics_col3, metrics_col4 = st.columns(4)
             
             current_price = data['Close'].iloc[-1]
-            prev_close = data['Close'].iloc[-2]
-            price_change = current_price - prev_close
-            price_change_pct = (price_change / prev_close) * 100
+            price_change = 0
+            price_change_pct = 0
+            
+            if len(data) >= 2:
+                prev_close = data['Close'].iloc[-2]
+                price_change = current_price - prev_close
+                price_change_pct = (price_change / prev_close) * 100
             
             metrics_col1.metric("Current Price", f"${current_price:.2f}", 
                               f"{price_change_pct:+.2f}%")
