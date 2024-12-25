@@ -1,0 +1,10 @@
+streamlit==1.31.0
+yfinance==0.2.36
+plotly==5.18.0
+pandas==2.2.0
+numpy==1.26.3
+ta==0.11.0
+finvizfinance==0.14.5
+statsmodels==0.14.1
+langchain-community==0.0.19
+holidays==0.43
